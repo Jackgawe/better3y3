@@ -1,27 +1,27 @@
 /**
- * Better3y3 - An advanced text encoding system
- * @author Jackgawe
- * @license MIT
+ * better3y3 - an advanced text encoding system
+ * @author jackgawe
+ * @license mit
  */
 
 class Better3y3 {
-    // Unicode ranges for encoding
+    // unicode ranges for encoding
     static RANGES = {
-        PRIMARY: { start: 0xE0000, end: 0xE007F },    // Original range
-        SECONDARY: { start: 0xE0080, end: 0xE00FF },  // Additional range
-        TERTIARY: { start: 0xE0100, end: 0xE017F },  // Backup range
-        QUATERNARY: { start: 0xE0180, end: 0xE01FF } // Extra range
+        PRIMARY: { start: 0xE0000, end: 0xE007F },    // original range
+        SECONDARY: { start: 0xE0080, end: 0xE00FF },  // additional range
+        TERTIARY: { start: 0xE0100, end: 0xE017F },  // backup range
+        QUATERNARY: { start: 0xE0180, end: 0xE01FF } // extra range
     };
 
     /**
-     * Encodes text using multiple Unicode ranges with rotation
-     * @param {string} text - The text to encode
-     * @param {Object} options - Encoding options
-     * @param {boolean} options.useMultipleRanges - Whether to use multiple Unicode ranges
-     * @param {boolean} options.addChecksum - Whether to add a checksum for validation
-     * @param {boolean} options.addSalt - Whether to add random salt characters
-     * @param {number} options.rotation - Number of characters to rotate (0-127)
-     * @returns {string} Encoded text
+     * encodes text using multiple unicode ranges with rotation
+     * @param {string} text - the text to encode
+     * @param {Object} options - encoding options
+     * @param {boolean} options.useMultipleRanges - whether to use multiple unicode ranges
+     * @param {boolean} options.addChecksum - whether to add a checksum for validation
+     * @param {boolean} options.addSalt - whether to add random salt characters
+     * @param {number} options.rotation - number of characters to rotate (0-127)
+     * @returns {string} encoded text
      */
     static encode(text, options = { 
         useMultipleRanges: true, 
@@ -30,10 +30,10 @@ class Better3y3 {
         rotation: 0
     }) {
         if (!text || typeof text !== 'string') {
-            throw new Error('Input must be a non-empty string');
+            throw new Error('input must be a non-empty string');
         }
 
-        // Apply rotation if specified
+        // apply rotation if specified
         if (options.rotation > 0) {
             text = this._rotateText(text, options.rotation);
         }
@@ -42,16 +42,16 @@ class Better3y3 {
         let rangeIndex = 0;
         const ranges = Object.values(this.RANGES);
 
-        // Add salt if enabled
+        // add salt if enabled
         if (options.addSalt) {
-            const salt = this._generateSalt(3); // Add 3 random salt characters
+            const salt = this._generateSalt(3); // add 3 random salt characters
             encoded += salt;
         }
 
         for (const char of text) {
             const codePoint = char.codePointAt(0);
             
-            // Only encode ASCII characters
+            // only encode ascii characters
             if (codePoint >= 0x20 && codePoint <= 0x7E) {
                 const currentRange = options.useMultipleRanges 
                     ? ranges[rangeIndex % ranges.length]
@@ -77,13 +77,13 @@ class Better3y3 {
     }
 
     /**
-     * Decodes text encoded with Better3y3
-     * @param {string} encodedText - The encoded text
-     * @param {Object} options - Decoding options
-     * @param {boolean} options.validateChecksum - Whether to validate the checksum
-     * @param {boolean} options.removeSalt - Whether to remove salt characters
-     * @param {number} options.rotation - Number of characters to rotate back (0-127)
-     * @returns {string} Decoded text
+     * decodes text encoded with better3y3
+     * @param {string} encodedText - the encoded text
+     * @param {Object} options - decoding options
+     * @param {boolean} options.validateChecksum - whether to validate the checksum
+     * @param {boolean} options.removeSalt - whether to remove salt characters
+     * @param {number} options.rotation - number of characters to rotate back (0-127)
+     * @returns {string} decoded text
      */
     static decode(encodedText, options = { 
         validateChecksum: true,
@@ -91,14 +91,14 @@ class Better3y3 {
         rotation: 0
     }) {
         if (!encodedText || typeof encodedText !== 'string') {
-            throw new Error('Input must be a non-empty string');
+            throw new Error('input must be a non-empty string');
         }
 
         let text = encodedText;
         
-        // Remove salt if present and enabled
+        // remove salt if present and enabled
         if (options.removeSalt) {
-            text = text.slice(3); // Remove first 3 characters (salt)
+            text = text.slice(3); // remove first 3 characters (salt)
         }
 
         let decoded = '';
@@ -107,7 +107,7 @@ class Better3y3 {
         for (const char of text) {
             const codePoint = char.codePointAt(0);
             
-            // Check all possible ranges
+            // check all possible ranges
             for (const range of Object.values(this.RANGES)) {
                 if (codePoint >= range.start && codePoint <= range.end) {
                     const originalCodePoint = codePoint - range.start;
@@ -123,16 +123,16 @@ class Better3y3 {
             if (lastCodePoint >= this.RANGES.PRIMARY.start && 
                 lastCodePoint <= this.RANGES.PRIMARY.end) {
                 checksum = lastCodePoint - this.RANGES.PRIMARY.start;
-                decoded = decoded.slice(0, -1); // Remove checksum character
+                decoded = decoded.slice(0, -1); // remove checksum character
                 
                 const calculatedChecksum = this._calculateChecksum(decoded);
                 if (checksum !== calculatedChecksum) {
-                    throw new Error('Checksum validation failed');
+                    throw new Error('checksum validation failed');
                 }
             }
         }
 
-        // Apply reverse rotation if specified
+        // apply reverse rotation if specified
         if (options.rotation > 0) {
             decoded = this._rotateText(decoded, -options.rotation);
         }
@@ -141,7 +141,7 @@ class Better3y3 {
     }
 
     /**
-     * Generates random salt characters
+     * generates random salt characters
      * @private
      */
     static _generateSalt(length) {
@@ -154,7 +154,7 @@ class Better3y3 {
     }
 
     /**
-     * Rotates text by a specified number of characters
+     * rotates text by a specified number of characters
      * @private
      */
     static _rotateText(text, rotation) {
@@ -166,7 +166,7 @@ class Better3y3 {
     }
 
     /**
-     * Calculates a checksum for the text
+     * calculates a checksum for the text
      * @private
      */
     static _calculateChecksum(text) {
@@ -176,8 +176,8 @@ class Better3y3 {
     }
 
     /**
-     * Checks if text is encoded with Better3y3
-     * @param {string} text - The text to check
+     * checks if text is encoded with better3y3
+     * @param {string} text - the text to check
      * @returns {boolean}
      */
     static isEncoded(text) {
@@ -197,7 +197,7 @@ class Better3y3 {
     }
 }
 
-// Export for both Node.js and browser environments
+// export for both node.js and browser environments
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = Better3y3;
 } else if (typeof window !== 'undefined') {
