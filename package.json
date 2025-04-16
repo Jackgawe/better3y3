@@ -1,0 +1,45 @@
+{
+  "name": "better3y3",
+  "version": "1.0.0",
+  "description": "An advanced version of the 3y3 text encoding system with enhanced obfuscation features",
+  "main": "better3y3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jackgawe/better3y3.git"
+  },
+  "keywords": [
+    "encoding",
+    "obfuscation",
+    "text",
+    "unicode",
+    "3y3",
+    "security",
+    "encryption"
+  ],
+  "author": "Jackgawe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jackgawe/better3y3/issues"
+  },
+  "homepage": "https://github.com/Jackgawe/better3y3#readme",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "contributors": [
+    {
+      "name": "ArjixWasTaken",
+      "url": "https://github.com/ArjixWasTaken"
+    },
+    {
+      "name": "yourcompanionAI",
+      "url": "https://github.com/yourcompanionAI"
+    }
+  ]
+} 
