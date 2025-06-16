@@ -167,7 +167,3 @@ It is primarily designed for:
 - Hiding text in plain sight
 - Basic message encoding
 - Adding an extra layer of security to non-sensitive data
-
-## License
-
-MIT License - See LICENSE file for details 
